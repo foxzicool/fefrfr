@@ -1,0 +1,12 @@
+<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>myApp.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- 日志文件输出的位置及文件名格式 -->
+        <fileNamePattern>logs/myApp.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <!-- 最多保留 1 天的历史记录 -->
+        <maxHistory>1</maxHistory>
+    </rollingPolicy>
+    <encoder>
+        <pattern>%date [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+</appender>

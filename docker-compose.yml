@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  # Spring Boot 应用服务
+  app:
+    build: . # Dockerfile 在当前目录
+    ports:
+      - "8081:8081" # 映射端口
+    depends_on:
+      - mysql # 依赖于 mysql 服务
+    environment: # 环境变量
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/spring_pra
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root_password
+    networks:
+      - mynetwork # 使用自定义网络
+
+  # MySQL 数据库服务
+  mysql:
+    image: mysql:8.0
+    environment: # 环境变量
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: spring_pra
+    ports:
+      - "3307:3306" # 映射端口
+    networks:
+      - mynetwork # 使用自定义网络
+
+# 自定义网络
+networks:
+  mynetwork:
+    driver: bridge
