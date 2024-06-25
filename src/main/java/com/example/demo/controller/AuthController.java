@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -20,9 +21,19 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         UserData user = userRepository.findByUsername(loginRequest.username);
         if (user != null && user.getPassword().equals(loginRequest.password)) {
+            // 假设这里设置了一些身份验证相关的会话信息
             return ResponseEntity.ok("Logged in successfully!");
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password!");
+    }
+
+    @PostMapping("/api/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); // 使当前会话无效
+        }
+        return ResponseEntity.ok("Logged out successfully!");
     }
 
     @PostMapping("/api/vote")
